@@ -8,8 +8,8 @@ import time
 import string
 import logging
 from collections import OrderedDict
-import Tkinter as tk
-import tkSimpleDialog as tksd
+import tkinter as tk
+import tkinter.simpledialog as tksd
 
 suits = ['S', 'H', 'D', 'C']
 ranks = ['A', 'K', 'Q', 'J', '10', '9', '8', '7', '6', '5', '4', '3', '2']
@@ -182,7 +182,7 @@ class PokerHand(object):
         for cards in self._by_suit(cards).values():
             l = len(cards)
             if l >= 5:
-                for i in xrange(0, l - 4):
+                for i in range(0, l - 4):
                     flushes.append(cards[i:i + 5])
         return flushes
 
@@ -190,7 +190,7 @@ class PokerHand(object):
         if cards is None:
             cards = self.cards
         straights = []
-        for i in xrange(0, len(cards) - 4):
+        for i in range(0, len(cards) - 4):
             card_ranks = [c.rank for c in cards[i:i + 5]]
             j = ranks.index(card_ranks[0])
             if card_ranks == ranks[j:j + 5]:
@@ -680,29 +680,28 @@ def hangman():
 
     def clear(num):
         for i in range(num):
-            print (" ")
+            print(" ")
+    
+    clear(50)
+    print("Let's play Hangman!!", "\n")
 
-    print("Let's play Hangman!!")
-    print(" ")
-
-    while guess_num > 0:
-        clear(80)
+    while guess_num >= 0:
         if guess_num == 1:
             print("  ____  ")
             print("  |  O  ")
-            print("  | /|\ ")
+            print("  | /|\\")
             print("  | /   ")
             print("-----   ")
         elif guess_num == 2:
             print("  ____  ")
             print("  |  O  ")
-            print("  | /|\ ")
+            print("  | /|\\")
             print("  |     ")
             print("-----   ")
         elif guess_num == 3:
             print("  ____  ")
             print("  |  O  ")
-            print("  |  |\ ")
+            print("  |  |\\")
             print("  |     ")
             print("-----   ")
         elif guess_num == 4:
@@ -723,39 +722,31 @@ def hangman():
             print("  |     ")
             print("  |     ")
             print("-----   ")
-        letter = False
-        for i in answer:
-            print i,
-
-        print(" ")
-        print(" ")
-        print(answer)
-        print(w)
-        print(list(guess))
-        if answer == w:
-            print("You Win!!")
-            print("The word was " + word + ".")
-            break
-
         elif guess_num == 0:
-            print("You Lose...")
-            print("The word was " + word + ".")
             print("  ____  ")
             print("  |  O  ")
-            print("  | /|\ ")
-            print("  | / \ ")
+            print("  | /|\\")
+            print("  | / \\")
             print("-----   ")
+            print("You Lose...")
+            print("The word was " + word + ".")
+            break
+        
+        print(''.join(answer), "\n\n")
+        print(word)
+        # print(w)
+        # print(list(guess))
+
+        print("Incorrect Guesses:", ', '.join(guesses), "\n")
+        print("Guesses Left:", guess_num, "\n")
+
+        if answer == w or guess == word:
+            print("You Win!!")
             break
 
-        print"Incorrect Guesses:"
-        for i in range(len(guesses)):
-            print guesses[i],
-        print(" ")
-        print"Guesses Left:", guess_num
-        print(" ")
-
+        letter = False
         while letter == False:
-            guess = str(raw_input("Guess a letter or a word: "))
+            guess = str(input("Guess a letter or a word: "))
             if guess not in alphabet:
                 if guess in guesses:
                     print("You've already guessed that.")
@@ -763,14 +754,9 @@ def hangman():
                     print("That's not a letter.")
                 elif len(guess) != len(word):
                         print("That's too short.")
-                elif len(guess) == len(word):
-                    temp_answer = []
-                    for i in w:
-                        temp_answer.append(i)
-                        if temp_answer == answer:
-                            answer = temp_answer
+                elif guess == word:
                     letter = True
-                    break
+                    answer = list(guess)
             elif guess in guesses:
                 print("You have already guessed that.")
             else:
@@ -789,6 +775,7 @@ def hangman():
             guess_num -= 1
             guesses.append(guess)
 
+        clear(50)
 
 play = ""
 window = tk.Tk()
